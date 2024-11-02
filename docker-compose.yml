@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  front-end-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app       # Mounts the current directory to /app in the container
+      - /app/node_modules  # Prevents node_modules from being overwritten by the mount
+    stdin_open: true
+    tty: true
