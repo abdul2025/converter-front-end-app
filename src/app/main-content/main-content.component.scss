@@ -1,4 +1,32 @@
-main {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
+.custom-main {
+
+}
+
+
+.title-custom {
+    justify-self: center;
+    padding-top: 2rem;
+    color: #4a4a4a;
+    font-size: 30px;
+    line-height: 34px;
+    font-weight: 800;
+}
+
+
+.sub-title-custom {
+    justify-self: center;
+    font-size: 16px;
+    font-weight: 200;
+}
+
+.btn-for-convert {
+    justify-self: center;
+    padding-top: 3rem;
+    .btn {
+        padding: 1rem;
+        font-size: large;
+        background-color: #e5322d;
+        color: white;
+    }
+    
 }
