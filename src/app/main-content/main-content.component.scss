@@ -1,8 +1,3 @@
-.custom-main {
-
-}
-
-
 .title-custom {
     justify-self: center;
     padding-top: 2rem;
@@ -12,21 +7,74 @@
     font-weight: 800;
 }
 
-
 .sub-title-custom {
     justify-self: center;
     font-size: 16px;
     font-weight: 200;
 }
 
-.btn-for-convert {
-    justify-self: center;
-    padding-top: 3rem;
-    .btn {
+.btn-for-convert-word {
+    .btn-word {
         padding: 1rem;
         font-size: large;
         background-color: #e5322d;
         color: white;
+        width: 17rem;
     }
-    
+}
+
+.custom-btn-container {
+    padding-top: 3rem;
+}
+
+.btn-for-convert-excel {
+    .btn-excel {
+        padding: 1rem;
+        font-size: large;
+        background-color: #1aab5b;
+        color: white;
+        width: 17rem;
+    }
+}
+
+.cloud-icons {
+    display: flex;
+    justify-content: end;
+
+    .btn-icon {
+        color: #e5322d;
+        font-size: large;
+        margin: 0.2rem;
+        cursor: pointer;
+    }
+
+}
+
+.btn-icon {
+    cursor: pointer;
+    position: relative;
+}
+
+.hover-message {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2f2f2f;
+    color: #e2e2e2;
+    padding: 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    font-size: 0.7rem;
+    font-weight: bolder;
+    font-family: auto;
+}
+
+.btn-icon:hover .hover-message {
+    visibility: visible;      /* Show on hover */
+    opacity: 1;               /* Fully visible */
 }
