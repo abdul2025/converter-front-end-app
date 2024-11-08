@@ -1,14 +1,56 @@
 <div class="custom-main">
-  <h2 class="title-custom">Convert Word Templates to PDF and Auto-Fill with Excel Header Mapping</h2>
+  <h2 class="title-custom">Convert Word Templates to PDFs and Auto-Fill with Excel Header Mapping</h2>
   <h5 class="sub-title-custom">Make DOC and DOCX Template filled up by your Excel file content & easy converting them to PDF or get them as DOCX.</h5>
-  <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container">
-    <div class="btn-for-convert-word ">
-      <button type="button" class="btn btn-word">Select Word Template</button>
+  <form>
+
+    <!-- File uploader fields -->
+    <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container">
+      <div class="btn-for-convert-word">
+        <!-- Drop zone for .docx files -->
+        <div
+          class="drop-zone"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDocxDrop($event)"
+        >
+          <input
+            type="file"
+            id="docxInput"
+            accept=".doc, .docx"
+            style="display: none;"
+            (change)="onDocxSelected($event)"
+          />
+          <button type="button" class="btn btn-word" (click)="triggerDocxInput()">Select Word File</button>
+        </div>
+      </div>
+      <div class="btn-for-convert-excel">
+         <!-- Drop zone for .xlsx or .csv files -->
+        <div
+          class="drop-zone"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onExcelCsvDrop($event)"
+        >
+          <input
+            type="file"
+            id="excelCsvInput"
+            accept=".xlsx, .csv"
+            style="display: none;"
+            (change)="onExcelCsvSelected($event)"
+          />
+          <button button type="button" class="btn btn-excel" (click)="triggerExcelCsvInput()">Select Excel/CSV File </button>
+        </div>
+      </div>
     </div>
-    <div class="btn-for-convert-excel">
-      <button type="button" class="btn btn-excel">Select Excel Data source File</button>
+
+    <div class="d-flex flex-fill flex-wrap justify-content-center align-items-center">
+      <div class="drop-labal">Or drop WORD or Excel files here</div>
     </div>
-    <div class="cloud-icons">
+
+
+    <!-- Saving Options -->
+    <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center">
+      <div class="cloud-icons">
         <i class="fa-brands fa-google-drive btn-icon">
           <span class="hover-message">Save to Google Drive</span>
         </i>
@@ -16,7 +58,37 @@
           <span class="hover-message">Save to Dropbox</span>
         </i>
       </div>
-  </div>
+    </div>
+
+    <!-- Display uploaded files' name -->
+    <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center">
+      <p *ngIf="selectedDocxFile" class="file-name file-name-word">{{ selectedDocxFile.name }}</p>
+      <p *ngIf="selectedExcelCsvFile" class="file-name file-name-excel">{{ selectedExcelCsvFile.name }}</p>
+    </div>
+
+    <!-- Option to get the files PDF or DOCX -->
+    <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center radio-box">
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckDefault"
+          [(ngModel)]="isToggled"
+          name="toggleSwitch"> <!-- Add name attribute -->
+        <label class="form-check-label" for="flexSwitchCheckDefault">
+          Default Generate PDFs or switch to Generate WORDs
+        </label>
+      </div>
+    </div>
+
+
+    <!-- Generating Action -->
+    <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container">
+      <button type="submit" class="btn btn-submit-pdf" [disabled]="!selectedDocxFile || !selectedExcelCsvFile" (click)="onGenerateClick()">Generate</button>
+    </div>
+
+  </form>
 </div>
 
 

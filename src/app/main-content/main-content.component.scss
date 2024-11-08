@@ -15,11 +15,7 @@
 
 .btn-for-convert-word {
     .btn-word {
-        padding: 1rem;
-        font-size: large;
-        background-color: #e5322d;
-        color: white;
-        width: 17rem;
+        background-color: #2d64e5;
     }
 }
 
@@ -29,11 +25,7 @@
 
 .btn-for-convert-excel {
     .btn-excel {
-        padding: 1rem;
-        font-size: large;
         background-color: #1aab5b;
-        color: white;
-        width: 17rem;
     }
 }
 
@@ -77,4 +69,72 @@
 .btn-icon:hover .hover-message {
     visibility: visible;      /* Show on hover */
     opacity: 1;               /* Fully visible */
+}
+
+.radio-box {
+  margin-top: 12rem;
+}
+
+
+
+.btn-submit-word {
+  background-color: #123da2 !important;
+}
+
+
+.btn-submit-word, .btn-submit-pdf, .btn-word, .btn-excel {
+  padding: 1rem;
+  font-size: larger;
+  background-color: #e5322d;
+  color: white;
+  width: 27rem;
+}
+
+.drop-labal, .file-name {
+  margin-top: 0.5rem;
+  font-weight: 100;
+  font-weight: light;
+}
+
+.custom-file-name {
+  max-width: 50%;
+}
+
+/* Change the background color of the switch when it's checked */
+#flexSwitchCheckDefault:checked {
+  background-color: #284aa7; /* Green color */
+}
+
+/* Change the color of the switch when it's checked */
+#flexSwitchCheckDefault:checked + .form-check-label {
+  color: #284aa7; /* Change text color if needed */
+}
+
+.form-check-label {
+  font-weight: bolder;
+  color: #9f4947;
+}
+
+/* Optional: Change the color of the toggle handle */
+#flexSwitchCheckDefault:checked::before {
+  background-color: #fff; /* White handle when toggled */
+}
+
+
+
+.file-name-excel {
+  color: #1aab5b;
+}
+
+.file-name-word {
+  color: #284aa7;
+}
+
+
+
+/* For medium-sized screens */
+@media (max-width: 768px) {
+  .btn-submit-word, .btn-submit-pdf, .btn-word, .btn-excel  {
+    width: 22rem; /* 50% width on medium screens (tablets) */
+  }
 }
