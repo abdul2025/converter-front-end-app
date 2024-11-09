@@ -14,7 +14,7 @@ export class ErrorHandlerService {
   showErrorMessage(message: string): void {
     this.toastr.error(message, '', {
       closeButton: true,
-      timeOut: 5000,  // Customize display duration (ms)
+      timeOut: 9000,  // Customize display duration (ms)
       progressBar: true,
     });
   }

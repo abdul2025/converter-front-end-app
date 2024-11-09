@@ -19,37 +19,43 @@ export class FileProcessingService {
     try {
       const docxWords = await this.extractWordsFromDocx(docxFile);
       const excelHeaders = await this.extractHeadersFromExcel(excelFile);
-      const hasMatchingHeader = this.checkForMatchingHeader(docxWords, excelHeaders);
 
-
-      // Validate if both have a content
-      if (docxWords.size === 0 || excelHeaders.length === 0) {
+      // Validate the extract functions does has a faliure
+      if (docxWords[1] == false || excelHeaders[1] == false){
         return
       }
 
+      // Validate if both have a content
+      if ((docxWords[0].size === 0 && docxWords[1] == true) || (excelHeaders[0].length === 0 && excelHeaders[1] == true)) {
+        throw new Error('File does not has a content')
+      }
+
+      // Validate there is no header matching
+      const hasMatchingHeader = this.checkForMatchingHeader(docxWords[0], excelHeaders[0]);
       if (!hasMatchingHeader) {
-        this.errorHandlerService.showErrorMessage('No excel header matchs a word in your document')
+        throw new Error('No excel header matchs a word in your document')
       }
     } catch (error) {
       this.errorHandlerService.showErrorMessage(`An error occurred during file processing: ${error}`)
+      return
     }
   }
 
   // Extracts words from DOCX file, converting to lowercase for case-insensitive matching
-  private async extractWordsFromDocx(file: File): Promise<Set<string>> {
+  private async extractWordsFromDocx(file: File): Promise<[Set<string>, boolean]> {
     try {
       const arrayBuffer = await file.arrayBuffer();
       const result = await Mammoth.extractRawText({ arrayBuffer });
       const words = new Set(result.value.toLowerCase().split(/\s+/));
-      return words;
+      return [words, true];
     } catch (error) {
       this.errorHandlerService.showErrorMessage(`Error reading DOCX file: ${error}`)
-      return new Set<string>();
+      return [new Set<string>(), false];
     }
   }
 
   // Extracts headers from Excel or CSV file and returns them as lowercase strings
-  private async extractHeadersFromExcel(file: File): Promise<string[]> {
+  private async extractHeadersFromExcel(file: File): Promise<[string[], boolean]> {
     try {
       const arrayBuffer = await file.arrayBuffer();
       const workbook = XLSX.read(arrayBuffer, { type: 'array' });
@@ -59,18 +65,18 @@ export class FileProcessingService {
       // Convert the sheet to a 2D array and check row count
       const sheetData = XLSX.utils.sheet_to_json<string[]>(worksheet, { header: 1 });
       if (sheetData.length >= 7) {
-        this.errorHandlerService.showErrorMessage(`File contain more than 7 rows, subscription is required`);
-        return [];
+        throw new Error('Excel file contains more than 10 rows, Subscription is required');
       }
 
-      // Extract headers from the first row
-      const headers = sheetData[0];
-      return headers.map(header => header.toLowerCase());
+      // Extract headers from the first row and convert them to lowercase
+      const headers = sheetData[0] as string[];
+      return [headers.map(header => header.toLowerCase()), true];  // Return headers and true to indicate success
     } catch (error) {
       this.errorHandlerService.showErrorMessage(`Error reading Excel/CSV file: ${error}`);
-      return [];
+      return [[], false];  // Return empty array and false to indicate failure due to error
     }
   }
+
 
   // Checks if any header matches any word in DOCX text
   private checkForMatchingHeader(docxWords: Set<string>, headers: string[]): boolean {

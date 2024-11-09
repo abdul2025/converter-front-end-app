@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FileProcessingService } from './services/file-processing.service';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
+import { ApiServiceService } from './services/api.service.service';
 
 
 
@@ -14,7 +15,8 @@ export class MainContentComponent implements OnInit {
 
   constructor(
     private fileProcessingService: FileProcessingService,
-    private errorHandlerService: ErrorHandlerService
+    private errorHandlerService: ErrorHandlerService,
+    private apiServiceService: ApiServiceService
     ) { }
 
   ngOnInit(): void {
@@ -107,10 +109,10 @@ export class MainContentComponent implements OnInit {
   checkToggle() {
     if (this.isToggled) {
       console.log('The switch is ON');
-      return true; // that means desired as PDFs
+      return 'PDF'; // that means desired as PDFs
     } else {
       console.log('The switch is OFF');
-      return false; // that means desired as WORDs
+      return 'WORD'; // that means desired as WORDs
     }
   }
 
@@ -122,7 +124,7 @@ export class MainContentComponent implements OnInit {
   // Function triggered to process files
   onGenerateClick(): void {
 
-    // check the desired file type
+    // desired file type true as PDF and false as WORD
     let desiredFileType = this.checkToggle();
 
     // check if file are uploaded by user
@@ -135,24 +137,39 @@ export class MainContentComponent implements OnInit {
       return
     }
 
-
     this.handleFileValidation(this.selectedDocxFile!, this.selectedExcelCsvFile!)
+    console.log("End of file validation")
 
     // Example: Perform some task here (e.g., generating a PDF, calling an API, etc.)
-    this.generateDocument();
+    this.generateDocument(desiredFileType);
   }
 
-  // Example function that handles document generation (PDF or Word)
-  generateDocument(): void {
-    // Perform the document generation task here
-    // For example, trigger an API call to generate the document
-    console.log('Document generation started...');
 
-    // Add your logic here, such as:
-    // - Calling a service to generate the document
-    // - Showing a loading spinner
-    // - Handling success or failure responses
+
+
+
+  ////////////////////////////////////////////////////////////////
+  /// API service to convert
+
+  generateDocument(outputType: string): void {
+
+    this.apiServiceService.generatePdfOrWord(this.selectedDocxFile!, this.selectedExcelCsvFile!, outputType).subscribe({
+      next: (response) => {
+        console.log('Document generated successfully:', response);
+      },
+      error: (err) => {
+        this.errorHandlerService.showErrorMessage(err);
+      },
+      complete: () => {
+        console.log('Document generation process completed');
+      }
+    });
   }
+
+
+
+
+
 
 
 
