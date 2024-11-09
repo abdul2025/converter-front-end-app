@@ -126,11 +126,11 @@ export class MainContentComponent implements OnInit {
     let desiredFileType = this.checkToggle();
 
     // check if file are uploaded by user
-    if (this.selectedDocxFile != null) {
+    if (this.selectedDocxFile == null) {
       this.errorHandlerService.showErrorMessage('Please select or drop WORD file')
       return
     }
-    if (this.selectedExcelCsvFile != null) {
+    if (this.selectedExcelCsvFile == null) {
       this.errorHandlerService.showErrorMessage('Please select or drop Excel file')
       return
     }

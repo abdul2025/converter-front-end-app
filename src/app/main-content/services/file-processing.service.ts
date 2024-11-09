@@ -21,7 +21,12 @@ export class FileProcessingService {
       const excelHeaders = await this.extractHeadersFromExcel(excelFile);
       const hasMatchingHeader = this.checkForMatchingHeader(docxWords, excelHeaders);
 
-      console.log(hasMatchingHeader ? 'Match found!' : 'No match found.');
+
+      // Validate if both have a content
+      if (docxWords.size === 0 || excelHeaders.length === 0) {
+        return
+      }
+
       if (!hasMatchingHeader) {
         this.errorHandlerService.showErrorMessage('No excel header matchs a word in your document')
       }
@@ -50,10 +55,19 @@ export class FileProcessingService {
       const workbook = XLSX.read(arrayBuffer, { type: 'array' });
       const firstSheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[firstSheetName];
-      const headers = XLSX.utils.sheet_to_json<string[]>(worksheet, { header: 1 })[0];
+
+      // Convert the sheet to a 2D array and check row count
+      const sheetData = XLSX.utils.sheet_to_json<string[]>(worksheet, { header: 1 });
+      if (sheetData.length >= 7) {
+        this.errorHandlerService.showErrorMessage(`File contain more than 7 rows, subscription is required`);
+        return [];
+      }
+
+      // Extract headers from the first row
+      const headers = sheetData[0];
       return headers.map(header => header.toLowerCase());
     } catch (error) {
-      this.errorHandlerService.showErrorMessage(`Error reading Excel/CSV file: ${error}`)
+      this.errorHandlerService.showErrorMessage(`Error reading Excel/CSV file: ${error}`);
       return [];
     }
   }
