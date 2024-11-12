@@ -118,7 +118,14 @@ export class MainContentComponent implements OnInit {
 
 
   async handleFileValidation(docxFile: File, excelFile: File) {
-    await this.fileProcessingService.validateMatching(docxFile, excelFile);
+    try {
+      await this.fileProcessingService.validateMatching(docxFile, excelFile);
+      // You can add any additional success handling here
+    } catch (error) {
+      console.error("Error during file validation:", error);
+      // Handle the error, e.g., show an error message to the user
+      this.errorHandlerService.showErrorMessage('Files validated');
+    }
   }
 
   // Function triggered to process files
@@ -150,6 +157,7 @@ export class MainContentComponent implements OnInit {
 
   ////////////////////////////////////////////////////////////////
   /// API service to convert
+  ////////////////////////////////////////////////////////////////
 
   generateDocument(outputType: string): void {
 
@@ -158,7 +166,8 @@ export class MainContentComponent implements OnInit {
         console.log('Document generated successfully:', response);
       },
       error: (err) => {
-        this.errorHandlerService.showErrorMessage(err);
+        // this.errorHandlerService.handleHttpError(err);
+        return
       },
       complete: () => {
         console.log('Document generation process completed');

@@ -37,7 +37,6 @@ export class FileProcessingService {
       }
     } catch (error) {
       this.errorHandlerService.showErrorMessage(`An error occurred during file processing: ${error}`)
-      return
     }
   }
 
