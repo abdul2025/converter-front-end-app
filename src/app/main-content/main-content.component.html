@@ -74,7 +74,7 @@
           type="checkbox"
           role="switch"
           id="flexSwitchCheckDefault"
-          [(ngModel)]="isToggled"
+          [(ngModel)]="isToggledFileType"
           name="toggleSwitch"> <!-- Add name attribute -->
         <label class="form-check-label" for="flexSwitchCheckDefault">
           Default Generate PDFs or switch to Generate WORDs
@@ -84,8 +84,13 @@
 
 
     <!-- Generating Action -->
-    <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container">
-      <button type="submit" class="btn btn-submit-pdf" [disabled]="!selectedDocxFile || !selectedExcelCsvFile" (click)="onGenerateClick()">Generate</button>
+    <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container" *ngIf="!fileReady">
+      <button type="submit" class="btn btn-submit" [disabled]="!selectedDocxFile || !selectedExcelCsvFile" (click)="onGenerateClick()">Generate</button>
+    </div>
+
+
+    <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container" *ngIf="fileReady">
+      <button type="click" class="btn btn-download" (click)="downloadFile()">Download File</button>
     </div>
 
   </form>

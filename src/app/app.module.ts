@@ -12,7 +12,9 @@ import { MainContentComponent } from './main-content/main-content.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr'; // Import ToastrModule
 import { ErrorHandlerService } from './services/error-handler.service';  // Your custom error handler
-import { HttpErrorInterceptor } from './services/http-error.interceptor'; // HTTP error interceptor
+import { HttpErrorInterceptor } from './services/http-error.interceptor';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component'; // HTTP error interceptor
+import { LoadingInterceptor } from './services/loading.interceptor';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { HttpErrorInterceptor } from './services/http-error.interceptor'; // HTT
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    MainContentComponent
+    MainContentComponent,
+    LoadingSpinnerComponent
 
   ],
   imports: [
@@ -36,6 +39,11 @@ import { HttpErrorInterceptor } from './services/http-error.interceptor'; // HTT
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,  // Register the HTTP interceptor
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
       multi: true,
     },
   ],

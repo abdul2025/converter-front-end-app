@@ -82,12 +82,16 @@
 }
 
 
-.btn-submit-word, .btn-submit-pdf, .btn-word, .btn-excel {
+.btn-submit-word, .btn-submit, .btn-download, .btn-word, .btn-excel {
   padding: 1rem;
   font-size: larger;
   background-color: #e5322d;
   color: white;
   width: 27rem;
+}
+
+.btn-download {
+  background-color: #932c29 !important;
 }
 
 .drop-labal, .file-name {
@@ -134,7 +138,7 @@
 
 /* For medium-sized screens */
 @media (max-width: 768px) {
-  .btn-submit-word, .btn-submit-pdf, .btn-word, .btn-excel  {
+  .btn-submit-word, .btn-submit, .btn-word, .btn-excel, .btn-download  {
     width: 22rem; /* 50% width on medium screens (tablets) */
   }
 }

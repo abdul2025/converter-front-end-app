@@ -63,7 +63,7 @@ export class FileProcessingService {
 
       // Convert the sheet to a 2D array and check row count
       const sheetData = XLSX.utils.sheet_to_json<string[]>(worksheet, { header: 1 });
-      if (sheetData.length >= 7) {
+      if (sheetData.length >= 117) {
         throw new Error('Excel file contains more than 10 rows, Subscription is required');
       }
 

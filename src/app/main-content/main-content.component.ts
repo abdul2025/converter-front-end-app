@@ -18,7 +18,6 @@ export class MainContentComponent implements OnInit {
     private errorHandlerService: ErrorHandlerService,
     private apiServiceService: ApiServiceService
     ) { }
-
   ngOnInit(): void {
   }
 
@@ -26,7 +25,11 @@ export class MainContentComponent implements OnInit {
   selectedDocxFile: File | null = null;
   selectedExcelCsvFile: File | null = null;
   isDragging: boolean = false;
-  isToggled: boolean = false;
+  isToggledFileType: boolean = false;
+
+  // File readiness
+  fileReady = false;
+  fileBlob: Blob | null = null;
 
   // Method to open the .docx file input dialog
   triggerDocxInput(): void {
@@ -103,16 +106,14 @@ export class MainContentComponent implements OnInit {
   }
 
 
-
-
   // Method to check if the toggle has been switched
   checkToggle() {
-    if (this.isToggled) {
+    if (this.isToggledFileType) {
       console.log('The switch is ON');
-      return 'PDF'; // that means desired as PDFs
+      return '0'; // that means desired as PDFs
     } else {
       console.log('The switch is OFF');
-      return 'WORD'; // that means desired as WORDs
+      return '1'; // that means desired as WORDs
     }
   }
 
@@ -161,18 +162,34 @@ export class MainContentComponent implements OnInit {
 
   generateDocument(outputType: string): void {
 
-    this.apiServiceService.generatePdfOrWord(this.selectedDocxFile!, this.selectedExcelCsvFile!, outputType).subscribe({
-      next: (response) => {
-        console.log('Document generated successfully:', response);
+    this.apiServiceService
+    .generatePdfOrWord(this.selectedDocxFile!, this.selectedExcelCsvFile!, outputType)
+    .subscribe({
+      next: (response: Blob) => {
+        this.fileBlob = response; // Store the Blob for later
+        this.fileReady = true; // Notify the user
       },
       error: (err) => {
-        // this.errorHandlerService.handleHttpError(err);
-        return
+        console.error('Error generating document:', err);
+        // Optional: Show an error notification
+        // this.toastr.error('Failed to generate document.');
       },
       complete: () => {
         console.log('Document generation process completed');
       }
     });
+  }
+
+  downloadFile() {
+    if (this.fileBlob) {
+      const url = window.URL.createObjectURL(this.fileBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = this.isToggledFileType ? 'documents.zip' : 'pdfs.zip';
+      a.click();
+      window.URL.revokeObjectURL(url); // Clean up
+      this.fileReady = false
+    }
   }
 
 

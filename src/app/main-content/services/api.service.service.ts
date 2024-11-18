@@ -7,18 +7,21 @@ import { Observable } from 'rxjs';
 })
 export class ApiServiceService {
 
-  private apiUrl = 'https://your-backend-url.com'; // Replace with your backend URL
+  private apiUrl = 'http://0.0.0.0:8000/app/convert_process_docx'; // Replace with your backend URL
 
   constructor(private http: HttpClient) { }
 
   generatePdfOrWord(wordFile: File, excelFile: File, outputType: string): Observable<any> {
     const formData = new FormData();
-    formData.append('wordFile', wordFile);
-    formData.append('excelFile', excelFile);
-    formData.append('outputType', outputType);
+    formData.append('docx', wordFile);
+    formData.append('excel', excelFile);
+    formData.append('results_type', outputType);
 
     const headers = new HttpHeaders();
 
-    return this.http.post(this.apiUrl, formData, { headers });
+    return this.http.post(this.apiUrl, formData, { 
+      headers, 
+      responseType: 'blob', // Expect binary data (ZIP file)
+     });
   }
 }
