@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiServiceService {
 
-  private apiUrl = 'http://0.0.0.0:8000/app/convert_process_docx'; // Replace with your backend URL
+  private apiUrl = 'http://127.0.0.1:8000/app/convert_process_docx'; // Replace with your backend URL
 
   constructor(private http: HttpClient) { }
 
@@ -19,8 +19,8 @@ export class ApiServiceService {
 
     const headers = new HttpHeaders();
 
-    return this.http.post(this.apiUrl, formData, { 
-      headers, 
+    return this.http.post(this.apiUrl, formData, {
+      headers,
       responseType: 'blob', // Expect binary data (ZIP file)
      });
   }

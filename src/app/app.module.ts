@@ -23,7 +23,7 @@ import { LoadingInterceptor } from './services/loading.interceptor';
     HeaderComponent,
     FooterComponent,
     MainContentComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
 
   ],
   imports: [

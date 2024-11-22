@@ -32,6 +32,11 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 - docker-compose -f docker-compose.yml up --build ## if not exsited build it and start
 - docker-compose -f docker-compose.yml build --no-cache ## force to create a new build even if exsited
 
+
+
+## Build cloudflare server HTTPS testing
+- cloudflared tunnel --url http://localhost:4200/
+
 ## Project Structure
 
 ```plaintext

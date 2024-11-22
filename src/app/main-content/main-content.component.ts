@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FileProcessingService } from './services/file-processing.service';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { ApiServiceService } from './services/api.service.service';
+import { DropboxService } from '../services/dropbox.service';
 
 
 
@@ -16,7 +17,8 @@ export class MainContentComponent implements OnInit {
   constructor(
     private fileProcessingService: FileProcessingService,
     private errorHandlerService: ErrorHandlerService,
-    private apiServiceService: ApiServiceService
+    private apiServiceService: ApiServiceService,
+    private dropboxService: DropboxService
     ) { }
   ngOnInit(): void {
   }
@@ -118,6 +120,50 @@ export class MainContentComponent implements OnInit {
   }
 
 
+  openDropboxChooser(fileType: number) {
+    this.dropboxService.openChooser(
+      (files) => {
+        if (files && files[0]) {
+          const selectedFile = files[0]; // Get the first selected file
+          const fileUrl = selectedFile.link; // Dropbox file download link
+
+          // Fetch the file content as ArrayBuffer
+          fetch(fileUrl)
+            .then((response) => response.arrayBuffer())
+            .then((buffer) => {
+              // Convert ArrayBuffer to Blob
+              const blob = new Blob([buffer], { type: this.dropboxService.getMimeType(selectedFile.name) });
+
+              // Convert Blob to File
+              const file = new File([blob], selectedFile.name, { type: blob.type });
+
+              if (fileType === 1) {
+                this.selectedDocxFile = file; // Store as a File object
+                console.log('Selected DOCX file:', this.selectedDocxFile);
+              } else if (fileType === 0) {
+                this.selectedExcelCsvFile = file; // Store as a File object
+                console.log('Selected Excel/CSV file:', this.selectedExcelCsvFile);
+              }
+            })
+            .catch((error) => {
+              console.error('Error fetching file from Dropbox:', error);
+            });
+        }
+      },
+      () => {
+        console.log('User canceled file selection');
+      }
+    );
+  }
+
+
+
+
+
+
+
+
+
   async handleFileValidation(docxFile: File, excelFile: File) {
     try {
       await this.fileProcessingService.validateMatching(docxFile, excelFile);
@@ -189,6 +235,8 @@ export class MainContentComponent implements OnInit {
       a.click();
       window.URL.revokeObjectURL(url); // Clean up
       this.fileReady = false
+      this.selectedDocxFile = null
+      this.selectedExcelCsvFile = null
     }
   }
 

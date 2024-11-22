@@ -4,6 +4,7 @@
     color: #4a4a4a;
     font-size: 30px;
     line-height: 34px;
+    padding-left: 1%;
     font-weight: 800;
 }
 
@@ -11,6 +12,7 @@
     justify-self: center;
     font-size: 16px;
     font-weight: 200;
+    padding-left: 1%;
 }
 
 .btn-for-convert-word {
@@ -134,11 +136,25 @@
   color: #284aa7;
 }
 
+.p-file-ready {
+  color: #9f4947;
+  font-weight: bolder;
+  font-size: 1.3rem;
+  padding: 0 5%;
+}
+
 
 
 /* For medium-sized screens */
 @media (max-width: 768px) {
   .btn-submit-word, .btn-submit, .btn-word, .btn-excel, .btn-download  {
     width: 22rem; /* 50% width on medium screens (tablets) */
+  }
+  .radio-box {
+    margin-top: 3rem;
+    padding-left: 6%;
+  }
+  .btn-submit-container-custom {
+    margin-bottom: 4rem;
   }
 }

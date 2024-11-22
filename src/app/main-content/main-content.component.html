@@ -4,7 +4,7 @@
   <form>
 
     <!-- File uploader fields -->
-    <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container">
+    <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container" *ngIf="!fileReady">
       <div class="btn-for-convert-word">
         <!-- Drop zone for .docx files -->
         <div
@@ -22,8 +22,19 @@
           />
           <button type="button" class="btn btn-word" (click)="triggerDocxInput()">Select Word File</button>
         </div>
+        <!-- Selection Options from cloud -->
+        <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center" *ngIf="!fileReady">
+          <div class="cloud-icons">
+            <i class="fa-brands fa-google-drive btn-icon">
+              <span class="hover-message">Select Word from Google Drive</span>
+            </i>
+            <i class="fa-brands fa-dropbox btn-icon" (click)="openDropboxChooser(1)">
+              <span class="hover-message">Select Word from Dropbox</span>
+            </i>
+          </div>
+        </div>
       </div>
-      <div class="btn-for-convert-excel">
+      <div class="btn-for-convert-excel" >
          <!-- Drop zone for .xlsx or .csv files -->
         <div
           class="drop-zone"
@@ -40,34 +51,36 @@
           />
           <button button type="button" class="btn btn-excel" (click)="triggerExcelCsvInput()">Select Excel/CSV File </button>
         </div>
+        <!-- Selection Options from cloud -->
+        <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center" *ngIf="!fileReady">
+          <div class="cloud-icons">
+            <i class="fa-brands fa-google-drive btn-icon">
+              <span class="hover-message">Select Excel from Google Drive</span>
+            </i>
+            <i class="fa-brands fa-dropbox btn-icon" (click)="openDropboxChooser(0)">
+              <span class="hover-message">Select Excel from Dropbox</span>
+            </i>
+          </div>
+        </div>
       </div>
+
     </div>
 
-    <div class="d-flex flex-fill flex-wrap justify-content-center align-items-center">
+    <div class="d-flex flex-fill flex-wrap justify-content-center align-items-center" *ngIf="!fileReady">
       <div class="drop-labal">Or drop WORD or Excel files here</div>
     </div>
 
 
-    <!-- Saving Options -->
-    <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center">
-      <div class="cloud-icons">
-        <i class="fa-brands fa-google-drive btn-icon">
-          <span class="hover-message">Save to Google Drive</span>
-        </i>
-        <i class="fa-brands fa-dropbox btn-icon">
-          <span class="hover-message">Save to Dropbox</span>
-        </i>
-      </div>
-    </div>
+
 
     <!-- Display uploaded files' name -->
-    <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center">
+    <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center" *ngIf="!fileReady">
       <p *ngIf="selectedDocxFile" class="file-name file-name-word">{{ selectedDocxFile.name }}</p>
       <p *ngIf="selectedExcelCsvFile" class="file-name file-name-excel">{{ selectedExcelCsvFile.name }}</p>
     </div>
 
     <!-- Option to get the files PDF or DOCX -->
-    <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center radio-box">
+    <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center radio-box" *ngIf="!fileReady">
       <div class="form-check form-switch">
         <input
           class="form-check-input"
@@ -84,10 +97,14 @@
 
 
     <!-- Generating Action -->
-    <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container" *ngIf="!fileReady">
+    <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container btn-submit-container-custom" *ngIf="!fileReady">
       <button type="submit" class="btn btn-submit" [disabled]="!selectedDocxFile || !selectedExcelCsvFile" (click)="onGenerateClick()">Generate</button>
     </div>
 
+
+    <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container" *ngIf="fileReady">
+      <p  class="p-file-ready">Great !! Your file is ready to be downloaded.</p>
+    </div>
 
     <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container" *ngIf="fileReady">
       <button type="click" class="btn btn-download" (click)="downloadFile()">Download File</button>
@@ -95,6 +112,7 @@
 
   </form>
 </div>
+
 
 
 
