@@ -8,7 +8,6 @@ declare var google: any;
   providedIn: 'root'
 })
 export class GooglePickerService {
-  private clientId: string = '784748268115-p2fq00o202apob7jg9urgh9g6bcsnfpk.apps.googleusercontent.com';
   private scope: string[] = ['https://www.googleapis.com/auth/drive.file'];
 
   constructor() {
@@ -34,7 +33,7 @@ export class GooglePickerService {
       const picker = new google.picker.PickerBuilder()
         .addView(google.picker.ViewId.DOCS)
         .setOAuthToken(oauthToken)
-        .setDeveloperKey('AIzaSyA1t7a5PNIdXFXjbycPdE1FGxyfixI9IrE')
+        .setDeveloperKey('')
         .setCallback(this.pickerCallback)
         .build();
       picker.setVisible(true);
