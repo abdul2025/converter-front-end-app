@@ -35,6 +35,7 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 
 ## Build cloudflare server HTTPS testing
+- ng serve --port 4200 --disable-host-check to allow https connections coming from cloudflare server
 - cloudflared tunnel --url http://localhost:4200/
 
 ## Project Structure

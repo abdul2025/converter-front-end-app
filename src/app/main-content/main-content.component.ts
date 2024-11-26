@@ -3,6 +3,7 @@ import { FileProcessingService } from './services/file-processing.service';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { ApiServiceService } from './services/api.service.service';
 import { DropboxService } from '../services/dropbox.service';
+import { GooglePickerService } from '../services/google-drive-picker.service';
 
 
 
@@ -18,10 +19,16 @@ export class MainContentComponent implements OnInit {
     private fileProcessingService: FileProcessingService,
     private errorHandlerService: ErrorHandlerService,
     private apiServiceService: ApiServiceService,
-    private dropboxService: DropboxService
+    private dropboxService: DropboxService,
+    private googlePickerService: GooglePickerService
     ) { }
-  ngOnInit(): void {
+
+
+   ngOnInit(): void {
+    // Initialize the Google API client when the app starts
+
   }
+
 
 
   selectedDocxFile: File | null = null;
@@ -32,6 +39,10 @@ export class MainContentComponent implements OnInit {
   // File readiness
   fileReady = false;
   fileBlob: Blob | null = null;
+
+  // Google drive files to process
+  googleDriveFile: any[] = [];
+  googleDriveselectedFile: any = null;
 
   // Method to open the .docx file input dialog
   triggerDocxInput(): void {
@@ -120,6 +131,9 @@ export class MainContentComponent implements OnInit {
   }
 
 
+
+
+  // DROPBOX Service to select file
   openDropboxChooser(fileType: number) {
     this.dropboxService.openChooser(
       (files) => {
@@ -128,26 +142,32 @@ export class MainContentComponent implements OnInit {
           const fileUrl = selectedFile.link; // Dropbox file download link
 
           // Fetch the file content as ArrayBuffer
-          fetch(fileUrl)
-            .then((response) => response.arrayBuffer())
+          fetch(fileUrl, { mode: 'cors' }) // Ensure CORS mode is enabled
+            .then((response) => {
+              if (!response.ok) {
+                this.errorHandlerService.showErrorMessage(`HTTP error! status: ${response.status}`);
+              }
+              return response.arrayBuffer();
+            })
             .then((buffer) => {
               // Convert ArrayBuffer to Blob
-              const blob = new Blob([buffer], { type: this.dropboxService.getMimeType(selectedFile.name) });
+              const mimeType = this.dropboxService.getMimeType(selectedFile.name);
+              const blob = new Blob([buffer], { type: mimeType });
 
               // Convert Blob to File
-              const file = new File([blob], selectedFile.name, { type: blob.type });
+              const file = new File([blob], selectedFile.name, { type: mimeType });
 
               if (fileType === 1) {
                 this.selectedDocxFile = file; // Store as a File object
-                console.log('Selected DOCX file:', this.selectedDocxFile);
               } else if (fileType === 0) {
                 this.selectedExcelCsvFile = file; // Store as a File object
-                console.log('Selected Excel/CSV file:', this.selectedExcelCsvFile);
               }
             })
             .catch((error) => {
-              console.error('Error fetching file from Dropbox:', error);
+              this.errorHandlerService.showErrorMessage(`Error fetching file from Dropbox: ${error}`);
             });
+        } else {
+          this.errorHandlerService.showErrorMessage('No files selected or file metadata unavailable.');
         }
       },
       () => {
@@ -155,6 +175,10 @@ export class MainContentComponent implements OnInit {
       }
     );
   }
+
+  openGooglePicker(): void {
+      this.googlePickerService.openPicker();
+    }
 
 
 

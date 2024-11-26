@@ -54,9 +54,11 @@
         <!-- Selection Options from cloud -->
         <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center" *ngIf="!fileReady">
           <div class="cloud-icons">
-            <i class="fa-brands fa-google-drive btn-icon">
+            <i class="fa-brands fa-google-drive btn-icon" (click)="openGooglePicker()">
               <span class="hover-message">Select Excel from Google Drive</span>
             </i>
+
+            <div class="g_id_signin" data-type="standard"></div>
             <i class="fa-brands fa-dropbox btn-icon" (click)="openDropboxChooser(0)">
               <span class="hover-message">Select Excel from Dropbox</span>
             </i>

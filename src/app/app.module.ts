@@ -15,6 +15,7 @@ import { ErrorHandlerService } from './services/error-handler.service';  // Your
 import { HttpErrorInterceptor } from './services/http-error.interceptor';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component'; // HTTP error interceptor
 import { LoadingInterceptor } from './services/loading.interceptor';
+import { GooglePickerService } from './services/google-drive-picker.service';
 
 
 @NgModule({
@@ -23,7 +24,7 @@ import { LoadingInterceptor } from './services/loading.interceptor';
     HeaderComponent,
     FooterComponent,
     MainContentComponent,
-    LoadingSpinnerComponent,
+    LoadingSpinnerComponent
 
   ],
   imports: [
@@ -36,6 +37,7 @@ import { LoadingInterceptor } from './services/loading.interceptor';
   ],
   providers: [
     ErrorHandlerService,
+    GooglePickerService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,  // Register the HTTP interceptor
