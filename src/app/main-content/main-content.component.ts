@@ -177,7 +177,7 @@ export class MainContentComponent implements OnInit {
   }
 
   openGooglePicker(): void {
-      this.googlePickerService.openPicker();
+    console.log('Google Picker')
     }
 
 

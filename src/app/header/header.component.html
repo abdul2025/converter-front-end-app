@@ -15,19 +15,49 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto"> <!-- Use me-auto instead of ms-auto -->
-        <li class="nav-item header-items">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        <li class="nav-item dropdown" class="dropdown"
+        (mouseenter)="onHoverStart()"
+        (mouseleave)="onHoverEnd()">
+          <span>Features <i class="fa-solid fa-caret-down"></i></span>
+          <ul class="header-items"  class="dropdown-menu" [class.show]="showDropdown">
+            <div class="feature-items">
+              <div class="convert-to-pdf-list">
+                <h6>Convert to PDF</h6>
+                <ul>
+                  <li ><a routerLink="/autofill"><i class="bi bi-file-earmark-pdf-fill fs-5 custom-icon-red"></i>Auto-Fill</a></li>
+                  <li ><a routerLink="/jpj_pdf"><i class="bi bi-filetype-jpg fs-5 custom-icon-yellow"></i>JPG to PDF</a></li>
+                  <li ><a routerLink="/word_pdf"><i class="bi bi-file-earmark-word-fill fs-5 custom-icon-blue"></i>WORD to PDF</a></li>
+                  <li ><a routerLink="/pp_pdf"><i class="bi bi-file-earmark-ppt-fill fs-5 custom-icon-red"></i>POWERPOINT to PDF</a></li>
+                </ul>
+              </div>
+              <div class="convert-from-pdf-list">
+                <h6>Convert from PDF</h6>
+                <ul>
+                  <li ><a routerLink="/profile"><i class="bi bi-filetype-jpg fs-5 custom-icon-yellow"></i>PDF to JPG</a></li>
+                  <li ><a routerLink="/profile"><i class="bi bi-file-earmark-word-fill fs-5 custom-icon-blue"></i>PDF to WORD</a></li>
+                  <li ><a routerLink="/profile"><i class="bi bi-file-earmark-ppt-fill fs-5 custom-icon-red"></i>PDF to POWERPOINT</a></li>
+                </ul>
+              </div>
+            </div>
+          </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link header-items" href="#">Features</a>
-        </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link header-items" href="#">Pricing</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link header-items" href="#">About</a>
-        </li> -->
       </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <!-- Hide log in and sign up for later usages -->
       <!-- <div class="d-flex">
         <ul class="navbar-nav me-auto">

@@ -1,10 +1,12 @@
 <div class="d-flex flex-column min-vh-100">
     <app-header></app-header>
-    
+
     <app-loading-spinner></app-loading-spinner>
     <!-- Main content area with flexible height to push footer to the bottom when content is short -->
-    <app-main-content class="flex-fill bg-light"></app-main-content>
-    
+    <!-- <app-main-content ></app-main-content> -->
+    <router-outlet></router-outlet>
+
+
     <!-- Footer with margin-top auto to stay at the bottom -->
     <app-footer class="mt-auto"></app-footer>
 </div>

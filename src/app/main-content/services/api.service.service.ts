@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiServiceService {
 
-  private apiUrl = 'https://principal-championship-belly-skills.trycloudflare.com/app/convert_process_docx'; // Replace with your backend URL
+  private apiUrl = 'http://0.0.0.0:8000/app/convert_process_docx'; // Replace with your backend URL
 
   constructor(private http: HttpClient) { }
 

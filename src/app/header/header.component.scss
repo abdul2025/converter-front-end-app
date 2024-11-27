@@ -39,5 +39,84 @@
 }
 
 
+.feature-items {
+  display: flex; /* Default flex-direction is row */
+  justify-content: space-evenly;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+  h6 {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.88rem;
+    color: gray;
+    font-weight: bolder;
+  }
+
+  ul {
+    padding-left: 0px !important;
+    list-style-type: none;
+    display: flex; /* Default flex-direction is row */
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: space-evenly;
+    margin-bottom: 1.5rem;
+
+    li {
+      a {
+        text-decoration: none; /* Removes the underline */
+        color: rgb(21, 21, 21);
+        font-weight: 900;
+        font-size: 0.88rem;
+
+      }
+      a:hover {
+        color: rgb(104, 104, 104);
+      }
+    }
+  }
+
+  .bi {
+    padding-right: 0.2rem !important;
+
+  }
+  .custom-icon-red {
+    color: rgb(214, 104, 104);
+  }
+  .custom-icon-yellow {
+    color: rgb(115, 113, 4);
+
+  }
+  .custom-icon-blue {
+    color: rgb(104, 111, 214);
+
+  }
+}
 
 
+
+.dropdown-menu {
+  display: none; /* Start with display set to none */
+  margin-top: 1.3rem;
+  background-color: $header-color !important;
+  box-shadow: inset 20px 11px 20px 3px rgba(0, 0, 0, 0.2);
+  width: 55rem;
+  max-height: 0; /* Start with no height */
+  overflow: hidden; /* Hide content that overflows when closed */
+  opacity: 0; /* Initially make it invisible */
+  transition: max-height 0.5s ease, opacity 0.3s ease; /* Transition for both height and opacity */
+
+  &.show {
+    display: block; /* Make it block when showing */
+    max-height: 500px; /* Set a reasonable max-height to trigger the transition */
+    opacity: 1; /* Make it visible */
+  }
+}
+
+
+
+  /* Mobile view */
+@media (max-width: 995px) {
+  .dropdown {
+    display: none;
+  }
+}

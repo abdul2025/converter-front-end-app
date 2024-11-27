@@ -16,6 +16,9 @@ import { HttpErrorInterceptor } from './services/http-error.interceptor';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component'; // HTTP error interceptor
 import { LoadingInterceptor } from './services/loading.interceptor';
 import { GooglePickerService } from './services/google-drive-picker.service';
+import { JpgToPdfComponent } from './jpg-to-pdf/jpg-to-pdf.component';
+import { WordToPdfComponent } from './word-to-pdf/word-to-pdf.component';
+import { PowerpointToPdfComponent } from './powerpoint-to-pdf/powerpoint-to-pdf.component';
 
 
 @NgModule({
@@ -24,7 +27,10 @@ import { GooglePickerService } from './services/google-drive-picker.service';
     HeaderComponent,
     FooterComponent,
     MainContentComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    JpgToPdfComponent,
+    WordToPdfComponent,
+    PowerpointToPdfComponent
 
   ],
   imports: [
