@@ -4,6 +4,7 @@ import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { ApiServiceService } from './services/api.service.service';
 import { DropboxService } from '../services/dropbox.service';
 import { GooglePickerService } from '../services/google-drive-picker.service';
+import { DownloadFileService } from '../services/download-file.service';
 
 
 
@@ -20,13 +21,13 @@ export class MainContentComponent implements OnInit {
     private errorHandlerService: ErrorHandlerService,
     private apiServiceService: ApiServiceService,
     private dropboxService: DropboxService,
-    private googlePickerService: GooglePickerService
+    private googlePickerService: GooglePickerService,
+    private downloadFileService: DownloadFileService
     ) { }
 
 
    ngOnInit(): void {
     // Initialize the Google API client when the app starts
-
   }
 
 
@@ -100,7 +101,7 @@ export class MainContentComponent implements OnInit {
       if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
         this.selectedDocxFile = file;
       } else {
-        this.errorHandlerService.showErrorMessage(`Invalid file type`)
+        this.errorHandlerService.showErrorMessage('Please drop a document file.')
       }
     }
   }
@@ -181,13 +182,6 @@ export class MainContentComponent implements OnInit {
     }
 
 
-
-
-
-
-
-
-
   async handleFileValidation(docxFile: File, excelFile: File) {
     try {
       await this.fileProcessingService.validateMatching(docxFile, excelFile);
@@ -250,17 +244,17 @@ export class MainContentComponent implements OnInit {
     });
   }
 
+
+  
+
   downloadFile() {
-    if (this.fileBlob) {
-      const url = window.URL.createObjectURL(this.fileBlob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = this.isToggledFileType ? 'documents.zip' : 'pdfs.zip';
-      a.click();
-      window.URL.revokeObjectURL(url); // Clean up
+    let downloadStatus = this.downloadFileService.downloadFile(this.fileBlob, this.isToggledFileType, 'auto-task')
+    if (downloadStatus) {
       this.fileReady = false
       this.selectedDocxFile = null
       this.selectedExcelCsvFile = null
+    }else {
+      console.log('DownloadFile Failed')
     }
   }
 
