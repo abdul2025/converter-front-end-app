@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ErrorHandlerService } from '../services/error-handler.service';
 import { DropboxService } from '../services/dropbox.service';
 import { DownloadFileService } from '../services/download-file.service';
+import { HttpHeaders } from '@angular/common/http';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-jpg-to-pdf',
@@ -13,7 +15,8 @@ export class JpgToPdfComponent implements OnInit {
   constructor(
     private errorHandlerService: ErrorHandlerService,
     private dropboxService: DropboxService,
-    private downloadFileService: DownloadFileService
+    private downloadFileService: DownloadFileService,
+    private apiService: ApiService
     ) { }
 
 
@@ -30,10 +33,12 @@ export class JpgToPdfComponent implements OnInit {
   // File readiness
   fileReady = false;
   fileBlob: Blob | null = null;
+  fileheader = new HttpHeaders()
+  contentDisposition: string | null = null
 
   // Method to open the .docx file input dialog
   triggerInput(): void {
-    const docxInput = document.getElementById('docxInput') as HTMLInputElement;
+    const docxInput = document.getElementById('fileInput') as HTMLInputElement;
     docxInput.click();
   }
 
@@ -133,9 +138,9 @@ export class JpgToPdfComponent implements OnInit {
       this.errorHandlerService.showErrorMessage('Please select or drop .jpg or .jpeg file')
       return
     }
-
+    this.fileReady = true; // Notify the user
     // Example: Perform Converter
-    this.generatePDF();
+    this.convertAction();
   }
 
 
@@ -146,32 +151,39 @@ export class JpgToPdfComponent implements OnInit {
   /// API service to convert
   ////////////////////////////////////////////////////////////////
 
-  generatePDF(): void {
+  convertAction(): void {
     console.log('generatePDF')
 
-    // this.apiServiceService
-    // .generatePdfOrWord(this.selectedDocxFile!, this.selectedExcelCsvFile!, outputType)
-    // .subscribe({
-    //   next: (response: Blob) => {
-    //     this.fileBlob = response; // Store the Blob for later
-    //     this.fileReady = true; // Notify the user
-    //   },
-    //   error: (err) => {
-    //     console.error('Error generating document:', err);
-    //     // Optional: Show an error notification
-    //     // this.toastr.error('Failed to generate document.');
-    //   },
-    //   complete: () => {
-    //     console.log('Document generation process completed');
-    //   }
-    // });
+    this.apiService.convertToPdf(this.selected!, 'image')
+    .subscribe({
+      next: (response) => {
+        this.contentDisposition = response.headers.get('Content-Disposition');
+        this.fileBlob = response.body; // Store the Blob for later
+        this.fileReady = true; // Notify the user
+      },
+      error: (err) => {
+        console.error('Error generating document:', err);
+        // Optional: Show an error notification
+        // this.toastr.error('Failed to generate document.');
+      },
+      complete: () => {
+        console.log('Document generation process completed');
+      }
+    });
   }
 
 
   
 
   downloadFile() {
-    let downloadStatus = this.downloadFileService.downloadFile(this.fileBlob, this.isToggledFileType, 'jpg')
+    let fileName = 'default-file-name.pdf'; // Fallback filename
+    if (this.contentDisposition) {
+      const matches = /filename="([^"]+)"/.exec(this.contentDisposition);
+      if (matches && matches[1]) {
+        fileName = matches[1]; // Extracted filename
+      }
+    }
+    let downloadStatus = this.downloadFileService.downloadFile(this.fileBlob, 'jpg')
     if (downloadStatus) {
       this.fileReady = false
       this.selected = null

@@ -84,7 +84,7 @@
 }
 
 
-.btn-submit-word, .btn-submit, .btn-download, .btn-word, .btn-excel {
+.btn-submit-word, .btn-submit, .btn-download, .btn-word, .btn-excel,  .btn-convert{
   padding: 1rem;
   font-size: larger;
   background-color: #e5322d;
@@ -144,10 +144,13 @@
 }
 
 
+.bi-arrow-right-circle {
+  padding-left: 1rem !important;
+}
 
 /* For medium-sized screens */
 @media (max-width: 768px) {
-  .btn-submit-word, .btn-submit, .btn-word, .btn-excel, .btn-download  {
+  .btn-submit-word, .btn-submit, .btn-word, .btn-excel, .btn-download, .btn-convert {
     width: 22rem; /* 50% width on medium screens (tablets) */
   }
   .radio-box {

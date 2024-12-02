@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FileProcessingService } from './services/file-processing.service';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { ApiServiceService } from './services/api.service.service';
+import { ApiService } from '../services/api.service';
 import { DropboxService } from '../services/dropbox.service';
 import { GooglePickerService } from '../services/google-drive-picker.service';
 import { DownloadFileService } from '../services/download-file.service';
@@ -19,7 +19,7 @@ export class MainContentComponent implements OnInit {
   constructor(
     private fileProcessingService: FileProcessingService,
     private errorHandlerService: ErrorHandlerService,
-    private apiServiceService: ApiServiceService,
+    private apiService: ApiService,
     private dropboxService: DropboxService,
     private googlePickerService: GooglePickerService,
     private downloadFileService: DownloadFileService
@@ -36,6 +36,7 @@ export class MainContentComponent implements OnInit {
   selectedExcelCsvFile: File | null = null;
   isDragging: boolean = false;
   isToggledFileType: boolean = false;
+  contentDisposition: string | null = null
 
   // File readiness
   fileReady = false;
@@ -226,11 +227,12 @@ export class MainContentComponent implements OnInit {
 
   generateDocument(outputType: string): void {
 
-    this.apiServiceService
+    this.apiService
     .generatePdfOrWord(this.selectedDocxFile!, this.selectedExcelCsvFile!, outputType)
     .subscribe({
-      next: (response: Blob) => {
-        this.fileBlob = response; // Store the Blob for later
+      next: (response) => {
+        this.contentDisposition = response.headers.get('Content-Disposition');
+        this.fileBlob = response.body; // Store the Blob for later
         this.fileReady = true; // Notify the user
       },
       error: (err) => {
@@ -248,7 +250,16 @@ export class MainContentComponent implements OnInit {
   
 
   downloadFile() {
-    let downloadStatus = this.downloadFileService.downloadFile(this.fileBlob, this.isToggledFileType, 'auto-task')
+    let fileName = 'default-file-name.zip'; // Fallback filename
+    if (this.contentDisposition) {
+      const matches = /filename="([^"]+)"/.exec(this.contentDisposition);
+      if (matches && matches[1]) {
+        fileName = matches[1]; // Extracted filename
+      }
+    }
+    // Downloading file action where it actually processed to the user ...
+    let downloadStatus = this.downloadFileService.downloadFile(this.fileBlob, fileName)
+
     if (downloadStatus) {
       this.fileReady = false
       this.selectedDocxFile = null

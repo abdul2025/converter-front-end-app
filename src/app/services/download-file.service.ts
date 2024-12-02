@@ -9,12 +9,12 @@ export class DownloadFileService {
 
 
 
-  downloadFile(fileBlob: Blob | null, isToggledFileType:boolean, service: string) {
+  downloadFile(fileBlob: Blob | null, fileName: string) {
     if (fileBlob) {
       const url = window.URL.createObjectURL(fileBlob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = isToggledFileType ? 'documents.zip' : 'pdfs.zip';
+      a.download = fileName 
       a.click();
       window.URL.revokeObjectURL(url); // Clean up
       return true
