@@ -36,25 +36,38 @@ export class JpgToPdfComponent implements OnInit {
   fileheader = new HttpHeaders()
   contentDisposition: string | null = null
 
+  private allowedImageTypes = [
+    'image/jpeg', 
+    'image/png', 
+    'image/gif', 
+    'image/webp', 
+    'image/bmp', 
+    'image/tiff', 
+    'image/svg+xml', 
+    'image/x-icon'
+  ];
+
   // Method to open the .docx file input dialog
   triggerInput(): void {
-    const docxInput = document.getElementById('fileInput') as HTMLInputElement;
-    docxInput.click();
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    fileInput.click();
   }
 
 
   // Handle the selected .docx file
   onFileSelected(event: Event): void {
-    this.handleFileSelection(event, 'jpg');
+    this.handleFileSelection(event);
   }
 
 
   // Handle file selection based on type
-  private handleFileSelection(event: Event, type: string): void {
+  private handleFileSelection(event: Event): void {
+
+  
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      if (file.type === 'image/jpeg' && (type === 'jpg' || type === 'jpeg')) {
+      if (this.allowedImageTypes.includes(file.type)) {
         this.selected = file;
       }
     }
@@ -76,7 +89,7 @@ export class JpgToPdfComponent implements OnInit {
     this.isDragging = false;
     if (event.dataTransfer?.files.length) {
       const file = event.dataTransfer.files[0];
-      if (file.type === 'image/jpeg') {
+      if (this.allowedImageTypes.includes(file.type)) {
         this.selected = file;
       } else {
         this.errorHandlerService.showErrorMessage('Please drop a jpeg file.')
@@ -136,10 +149,8 @@ export class JpgToPdfComponent implements OnInit {
     // check if file are uploaded by user
     if (this.selected == null) {
       this.errorHandlerService.showErrorMessage('Please select or drop .jpg or .jpeg file')
-      return
     }
-    this.fileReady = true; // Notify the user
-    // Example: Perform Converter
+    // Perform Converter
     this.convertAction();
   }
 
@@ -152,21 +163,18 @@ export class JpgToPdfComponent implements OnInit {
   ////////////////////////////////////////////////////////////////
 
   convertAction(): void {
-    console.log('generatePDF')
-
     this.apiService.convertToPdf(this.selected!, 'image')
     .subscribe({
       next: (response) => {
         this.contentDisposition = response.headers.get('Content-Disposition');
         this.fileBlob = response.body; // Store the Blob for later
-        this.fileReady = true; // Notify the user
       },
       error: (err) => {
-        console.error('Error generating document:', err);
-        // Optional: Show an error notification
-        // this.toastr.error('Failed to generate document.');
+        this.errorHandlerService.handleHttpError(err);
+        this.selected = null
       },
       complete: () => {
+        this.fileReady = true; // Notify the user
         console.log('Document generation process completed');
       }
     });
@@ -178,12 +186,12 @@ export class JpgToPdfComponent implements OnInit {
   downloadFile() {
     let fileName = 'default-file-name.pdf'; // Fallback filename
     if (this.contentDisposition) {
-      const matches = /filename="([^"]+)"/.exec(this.contentDisposition);
+      const matches = /filename="?([^"]+)"?/.exec(this.contentDisposition);
       if (matches && matches[1]) {
         fileName = matches[1]; // Extracted filename
       }
     }
-    let downloadStatus = this.downloadFileService.downloadFile(this.fileBlob, 'jpg')
+    let downloadStatus = this.downloadFileService.downloadFile(this.fileBlob, fileName)
     if (downloadStatus) {
       this.fileReady = false
       this.selected = null

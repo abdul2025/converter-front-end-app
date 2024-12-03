@@ -3,19 +3,24 @@ import { ErrorHandlerService } from '../services/error-handler.service';
 import { DropboxService } from '../services/dropbox.service';
 import { DownloadFileService } from '../services/download-file.service';
 import { HttpHeaders } from '@angular/common/http';
+import { ApiService } from '../services/api.service';
+
+
 @Component({
   selector: 'app-powerpoint-to-pdf',
   templateUrl: './powerpoint-to-pdf.component.html',
   styleUrls: ['./powerpoint-to-pdf.component.scss']
 })
+
+
 export class PowerpointToPdfComponent implements OnInit {
 
   constructor(
     private errorHandlerService: ErrorHandlerService,
     private dropboxService: DropboxService,
-    private downloadFileService: DownloadFileService
+    private downloadFileService: DownloadFileService,
+    private apiService: ApiService
     ) { }
-
 
    ngOnInit(): void {
     // Initialize the Google API client when the app starts
@@ -31,26 +36,33 @@ export class PowerpointToPdfComponent implements OnInit {
   fileReady = false;
   fileBlob: Blob | null = null;
   fileheader = new HttpHeaders()
+  contentDisposition: string | null = null
+
+  private allowed_extensions = [
+    '.ppt', '.pptx', '.pptm', '.pot', '.potx', '.potm', '.pps', '.ppsx', '.ppsm', '.odp'
+  ]
 
   // Method to open the .docx file input dialog
   triggerInput(): void {
-    const docxInput = document.getElementById('fileInput') as HTMLInputElement;
-    docxInput.click();
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    fileInput.click();
   }
 
 
   // Handle the selected .docx file
   onFileSelected(event: Event): void {
-    this.handleFileSelection(event, 'jpg');
+    this.handleFileSelection(event);
   }
 
 
   // Handle file selection based on type
-  private handleFileSelection(event: Event, type: string): void {
+  private handleFileSelection(event: Event): void {
+
+  
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      if (file.type === 'image/jpeg' && (type === 'jpg' || type === 'jpeg')) {
+      if (this.allowed_extensions.includes(file.type)) {
         this.selected = file;
       }
     }
@@ -72,10 +84,10 @@ export class PowerpointToPdfComponent implements OnInit {
     this.isDragging = false;
     if (event.dataTransfer?.files.length) {
       const file = event.dataTransfer.files[0];
-      if (file.type === 'image/jpeg') {
+      if (this.allowed_extensions.includes(file.type)) {
         this.selected = file;
       } else {
-        this.errorHandlerService.showErrorMessage('Please drop a jpeg file.')
+        this.errorHandlerService.showErrorMessage('Please drop a Powerpoint file.')
       }
     }
   }
@@ -131,12 +143,10 @@ export class PowerpointToPdfComponent implements OnInit {
 
     // check if file are uploaded by user
     if (this.selected == null) {
-      this.errorHandlerService.showErrorMessage('Please select or drop .jpg or .jpeg file')
-      return
+      this.errorHandlerService.showErrorMessage('Please select or drop Powerpoint file')
     }
-
-    // Example: Perform Converter
-    this.generatePDF();
+    // Perform Converter
+    this.convertAction();
   }
 
 
@@ -147,32 +157,36 @@ export class PowerpointToPdfComponent implements OnInit {
   /// API service to convert
   ////////////////////////////////////////////////////////////////
 
-  generatePDF(): void {
-    console.log('generatePDF')
-
-    // this.apiServiceService
-    // .generatePdfOrWord(this.selectedDocxFile!, this.selectedExcelCsvFile!, outputType)
-    // .subscribe({
-    //   next: (response: Blob) => {
-    //     this.fileBlob = response; // Store the Blob for later
-    //     this.fileReady = true; // Notify the user
-    //   },
-    //   error: (err) => {
-    //     console.error('Error generating document:', err);
-    //     // Optional: Show an error notification
-    //     // this.toastr.error('Failed to generate document.');
-    //   },
-    //   complete: () => {
-    //     console.log('Document generation process completed');
-    //   }
-    // });
+  convertAction(): void {
+    this.apiService.convertToPdf(this.selected!, 'image')
+    .subscribe({
+      next: (response) => {
+        this.contentDisposition = response.headers.get('Content-Disposition');
+        this.fileBlob = response.body; // Store the Blob for later
+      },
+      error: (err) => {
+        this.errorHandlerService.handleHttpError(err);
+        this.selected = null
+      },
+      complete: () => {
+        this.fileReady = true; // Notify the user
+        console.log('Document generation process completed');
+      }
+    });
   }
 
 
   
 
   downloadFile() {
-    let downloadStatus = this.downloadFileService.downloadFile(this.fileBlob, 'jpg')
+    let fileName = 'default-file-name.pdf'; // Fallback filename
+    if (this.contentDisposition) {
+      const matches = /filename="?([^"]+)"?/.exec(this.contentDisposition);
+      if (matches && matches[1]) {
+        fileName = matches[1]; // Extracted filename
+      }
+    }
+    let downloadStatus = this.downloadFileService.downloadFile(this.fileBlob, fileName)
     if (downloadStatus) {
       this.fileReady = false
       this.selected = null

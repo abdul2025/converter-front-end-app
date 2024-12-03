@@ -44,11 +44,11 @@ import { PowerpointToPdfComponent } from './powerpoint-to-pdf/powerpoint-to-pdf.
   providers: [
     ErrorHandlerService,
     GooglePickerService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,  // Register the HTTP interceptor
-      multi: true,
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: HttpErrorInterceptor,  // Register the HTTP interceptor
+    //   multi: true,
+    // },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,

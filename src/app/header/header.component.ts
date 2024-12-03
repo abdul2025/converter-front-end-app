@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  showDropdown = true;
+  showDropdown = false;
   dropdownTimeout: any; // To store the timer reference
 
 
@@ -27,7 +27,12 @@ export class HeaderComponent implements OnInit {
     // Set a timer to delay hiding the dropdown
     this.dropdownTimeout = setTimeout(() => {
       this.showDropdown = false;
-    }, 300); // Delay of 500ms
+    }, 100); // Delay of 500ms
+  }
+
+
+  onClick(): void {
+    this.showDropdown = false;
   }
 
 }

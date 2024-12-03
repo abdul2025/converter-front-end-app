@@ -233,26 +233,24 @@ export class MainContentComponent implements OnInit {
       next: (response) => {
         this.contentDisposition = response.headers.get('Content-Disposition');
         this.fileBlob = response.body; // Store the Blob for later
-        this.fileReady = true; // Notify the user
       },
       error: (err) => {
-        console.error('Error generating document:', err);
-        // Optional: Show an error notification
-        // this.toastr.error('Failed to generate document.');
+        this.errorHandlerService.handleHttpError(err);
+        this.selectedDocxFile = null
+        this.selectedExcelCsvFile = null        
       },
       complete: () => {
+        this.fileReady = true; // Notify the user
         console.log('Document generation process completed');
       }
     });
   }
 
 
-  
-
   downloadFile() {
     let fileName = 'default-file-name.zip'; // Fallback filename
     if (this.contentDisposition) {
-      const matches = /filename="([^"]+)"/.exec(this.contentDisposition);
+      const matches = /filename="?([^"]+)"?/.exec(this.contentDisposition);
       if (matches && matches[1]) {
         fileName = matches[1]; // Extracted filename
       }
