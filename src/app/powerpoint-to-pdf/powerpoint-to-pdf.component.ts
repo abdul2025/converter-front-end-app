@@ -38,9 +38,18 @@ export class PowerpointToPdfComponent implements OnInit {
   fileheader = new HttpHeaders()
   contentDisposition: string | null = null
 
-  private allowed_extensions = [
-    '.ppt', '.pptx', '.pptm', '.pot', '.potx', '.potm', '.pps', '.ppsx', '.ppsm', '.odp'
-  ]
+  private allowedPowerPointTypes = [
+    // PowerPoint document MIME types
+    'application/vnd.ms-powerpoint', // .ppt
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+    'application/vnd.ms-powerpoint.presentation.macroEnabled.12', // .pptm (macro-enabled PowerPoint)
+    'application/vnd.ms-powerpoint.template.macroEnabled.12', // .potm (macro-enabled template)
+    'application/vnd.openxmlformats-officedocument.presentationml.template', // .potx
+    'application/vnd.ms-powerpoint.slideshow.macroEnabled.12', // .ppsm (macro-enabled slideshow)
+    'application/vnd.openxmlformats-officedocument.presentationml.slideshow', // .ppsx
+    'application/vnd.ms-powerpoint.slideshow.macroEnabled.12', // .ppsm
+    'application/vnd.oasis.opendocument.presentation', // .odp (OpenDocument Presentation)
+];
 
   // Method to open the .docx file input dialog
   triggerInput(): void {
@@ -62,9 +71,14 @@ export class PowerpointToPdfComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      if (this.allowed_extensions.includes(file.type)) {
+      console.log(file.type)
+      if (this.allowedPowerPointTypes.includes(file.type)) {
         this.selected = file;
+      }else {
+        console.log('Issue with the extantion')
       }
+    }else {
+      console.log('issue with the file')
     }
   }
 
@@ -84,7 +98,7 @@ export class PowerpointToPdfComponent implements OnInit {
     this.isDragging = false;
     if (event.dataTransfer?.files.length) {
       const file = event.dataTransfer.files[0];
-      if (this.allowed_extensions.includes(file.type)) {
+      if (this.allowedPowerPointTypes.includes(file.type)) {
         this.selected = file;
       } else {
         this.errorHandlerService.showErrorMessage('Please drop a Powerpoint file.')
@@ -158,7 +172,7 @@ export class PowerpointToPdfComponent implements OnInit {
   ////////////////////////////////////////////////////////////////
 
   convertAction(): void {
-    this.apiService.convertToPdf(this.selected!, 'image')
+    this.apiService.convertToPdf(this.selected!, 'powerPoint')
     .subscribe({
       next: (response) => {
         this.contentDisposition = response.headers.get('Content-Disposition');

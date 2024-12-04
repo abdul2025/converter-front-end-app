@@ -39,7 +39,7 @@ export class ApiService {
 
   convertToPdf(File: File, type: string): Observable<any> {
     const formData = new FormData();
-    formData.append('image', File);
+    formData.append(type, File);
     formData.append('incoming_type', type);
 
     const fullUrl = `${this.apiUrl}/convert_to_pdf`; 

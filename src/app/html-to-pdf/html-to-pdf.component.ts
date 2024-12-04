@@ -1,18 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ErrorHandlerService } from '../services/error-handler.service';
 import { DropboxService } from '../services/dropbox.service';
+import { ErrorHandlerService } from '../services/error-handler.service';
 import { DownloadFileService } from '../services/download-file.service';
-import { HttpHeaders } from '@angular/common/http';
 import { ApiService } from '../services/api.service';
-
-
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
-  selector: 'app-word-to-pdf',
-  templateUrl: './word-to-pdf.component.html',
-  styleUrls: ['./word-to-pdf.component.scss']
+  selector: 'app-html-to-pdf',
+  templateUrl: './html-to-pdf.component.html',
+  styleUrls: ['./html-to-pdf.component.scss']
 })
-export class WordToPdfComponent implements OnInit {
+export class HtmlToPdfComponent implements OnInit {
 
   constructor(
     private errorHandlerService: ErrorHandlerService,
@@ -38,12 +36,10 @@ export class WordToPdfComponent implements OnInit {
   fileheader = new HttpHeaders()
   contentDisposition: string | null = null
 
-  private allowedWordTypes = [
-    // Word document MIME types
-    'application/msword', // .doc
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-    'application/vnd.ms-word.document.macroEnabled.12', // .docm (macro-enabled Word)
-    'application/vnd.oasis.opendocument.text' // .odt (OpenDocument Text)
+  private allowedHtmlTypes = [
+    '.html',
+    '.htm',
+    'text/html'
   ];
 
   // Method to open the .docx file input dialog
@@ -66,7 +62,7 @@ export class WordToPdfComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      if (this.allowedWordTypes.includes(file.type)) {
+      if (this.allowedHtmlTypes.includes(file.type)) {
         this.selected = file;
       }
     }
@@ -88,10 +84,10 @@ export class WordToPdfComponent implements OnInit {
     this.isDragging = false;
     if (event.dataTransfer?.files.length) {
       const file = event.dataTransfer.files[0];
-      if (this.allowedWordTypes.includes(file.type)) {
+      if (this.allowedHtmlTypes.includes(file.type)) {
         this.selected = file;
       } else {
-        this.errorHandlerService.showErrorMessage('Please drop a docx file.')
+        this.errorHandlerService.showErrorMessage('Please drop a html file.')
       }
     }
   }
@@ -147,19 +143,22 @@ export class WordToPdfComponent implements OnInit {
 
     // check if file are uploaded by user
     if (this.selected == null) {
-      this.errorHandlerService.showErrorMessage('Please select or drop .docx file')
+      this.errorHandlerService.showErrorMessage('Please select or drop html file')
     }
     // Perform Converter
     this.convertAction();
   }
 
+
+
+
+
   ////////////////////////////////////////////////////////////////
   /// API service to convert
   ////////////////////////////////////////////////////////////////
 
-  
   convertAction(): void {
-    this.apiService.convertToPdf(this.selected!, 'docx')
+    this.apiService.convertToPdf(this.selected!, 'html')
     .subscribe({
       next: (response) => {
         this.contentDisposition = response.headers.get('Content-Disposition');

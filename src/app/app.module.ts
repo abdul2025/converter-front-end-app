@@ -19,6 +19,8 @@ import { GooglePickerService } from './services/google-drive-picker.service';
 import { JpgToPdfComponent } from './jpg-to-pdf/jpg-to-pdf.component';
 import { WordToPdfComponent } from './word-to-pdf/word-to-pdf.component';
 import { PowerpointToPdfComponent } from './powerpoint-to-pdf/powerpoint-to-pdf.component';
+import { ExcelToPdfComponent } from './excel-to-pdf/excel-to-pdf.component';
+import { HtmlToPdfComponent } from './html-to-pdf/html-to-pdf.component';
 
 
 @NgModule({
@@ -30,7 +32,9 @@ import { PowerpointToPdfComponent } from './powerpoint-to-pdf/powerpoint-to-pdf.
     LoadingSpinnerComponent,
     JpgToPdfComponent,
     WordToPdfComponent,
-    PowerpointToPdfComponent
+    PowerpointToPdfComponent,
+    ExcelToPdfComponent,
+    HtmlToPdfComponent
 
   ],
   imports: [

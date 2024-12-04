@@ -1,7 +1,7 @@
 
 <div class="custom-main">
-    <h2 class="title-custom">WORD to PDF</h2>
-    <h5 class="sub-title-custom">Convert WORD images to PDF in seconds. Easily adjust orientation and margins.</h5>
+    <h2 class="title-custom">HTML to PDF</h2>
+    <h5 class="sub-title-custom">Convert HTML images to PDF in seconds. Easily adjust orientation and margins.</h5>
     <form>
       <!-- File uploader fields -->
       <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container" *ngIf="!fileReady">
@@ -16,11 +16,11 @@
             <input
               type="file"
               id="fileInput"
-              accept=".doc, .docx, .docm, .odt"
+              accept=".html, .htm, text/html"
               style="display: none;"
               (change)="onFileSelected($event)"
             />
-            <button type="button" class="btn btn-convert" (click)="triggerInput()">Select WORD File</button>
+            <button type="button" class="btn btn-convert" (click)="triggerInput()">Select HTML File</button>
           </div>
           <!-- Selection Options from cloud -->
           <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center" *ngIf="!fileReady">
@@ -29,7 +29,7 @@
                 <span class="hover-message">Select Word from Google Drive</span>
               </i> -->
               <i class="fa-brands fa-dropbox btn-icon" (click)="openDropboxChooser(1)">
-                <span class="hover-message">Select Word from Dropbox</span>
+                <span class="hover-message">Select HTML from Dropbox</span>
               </i>
             </div>
           </div>
@@ -38,7 +38,7 @@
       </div>
   
       <div class="d-flex flex-fill flex-wrap justify-content-center align-items-center" *ngIf="!fileReady">
-        <div class="drop-labal">Or drop WORD files here</div>
+        <div class="drop-labal">Or drop HTML files here</div>
       </div>
   
   
