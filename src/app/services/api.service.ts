@@ -25,7 +25,7 @@ export class ApiService {
     formData.append('excel', excelFile);
     formData.append('results_type', outputType);
 
-    const fullUrl = `${this.apiUrl}/convert_sautotask`; 
+    const fullUrl = `${this.apiUrl}/convert_autotask`; 
     const headers = new HttpHeaders();
 
     return this.http.post(fullUrl, formData, {

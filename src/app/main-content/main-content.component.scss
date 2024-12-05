@@ -2,8 +2,8 @@
     justify-self: center;
     padding-top: 2rem;
     color: #4a4a4a;
-    font-size: 30px;
-    line-height: 34px;
+    font-size: 2.6rem;
+    line-height: 42px;
     padding-left: 1%;
     font-weight: 800;
 }
@@ -86,10 +86,11 @@
 
 .btn-submit-word, .btn-submit, .btn-download, .btn-word, .btn-excel,  .btn-convert{
   padding: 1rem;
-  font-size: larger;
+  font-size: 1.4rem;
   background-color: #e5322d;
   color: white;
   width: 27rem;
+  box-shadow:0px 8px 15px 5px rgba(0, 0, 0, 0.2); /* Adjust the values as needed */
 }
 
 .btn-download {
