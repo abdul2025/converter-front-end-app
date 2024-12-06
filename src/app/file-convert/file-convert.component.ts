@@ -1,29 +1,59 @@
-import { Component, OnInit } from '@angular/core';
-import { ErrorHandlerService } from '../services/error-handler.service';
-import { DropboxService } from '../services/dropbox.service';
-import { DownloadFileService } from '../services/download-file.service';
 import { HttpHeaders } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
+import { DownloadFileService } from '../services/download-file.service';
+import { DropboxService } from '../services/dropbox.service';
+import { ErrorHandlerService } from '../services/error-handler.service';
+import { ConversionInfoInterface, HandlingPathsService } from '../services/handling-paths.service';
 
 @Component({
-  selector: 'app-jpg-to-pdf',
-  templateUrl: './jpg-to-pdf.component.html',
-  styleUrls: ['./jpg-to-pdf.component.scss']
+  selector: 'app-file-convert',
+  templateUrl: './file-convert.component.html',
+  styleUrls: ['./file-convert.component.scss']
 })
-export class JpgToPdfComponent implements OnInit {
+export class FileConvertComponent implements OnInit {
+  obj: ConversionInfoInterface = {
+    title: '',
+    subTitle: '',
+    selectFileBtn: '',
+    hoverMessage: '',
+    dropLabal: '',
+    btnSubmit: '',
+    btnColor: '',
+    acceptedFileType: '',
+    fileType: ''
+  };
 
   constructor(
     private errorHandlerService: ErrorHandlerService,
     private dropboxService: DropboxService,
     private downloadFileService: DownloadFileService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private handlingPathsService: HandlingPathsService
     ) { }
 
 
-   ngOnInit(): void {
-    // Initialize the Google API client when the app starts
-  }
+    ngOnInit(): void {
+      // Find the user path
+      const currentPath = this.route.snapshot.url.join('/');
+      //  handle page content, style and file types
+      // check if reverse
+      if (currentPath.includes('reverse')) {
+        // Handle reverse logic
+        [this.obj, this.urlReversed] = this.handlingPathsService.handleReversePath(currentPath);
+      } else {
+        // Handle normal path logic
+        [this.obj, this.urlReversed] = this.handlingPathsService.handleNormalPath(currentPath);
+      }
+      this.allowedTypes = this.allowedTypes ?? (this.obj.acceptedFileType ? this.obj.acceptedFileType.split(', ').map(item => item.trim()) : []);
 
+      if (currentPath){
+        this.reverseFileType = currentPath.split('_')[0];
+      }
+      console.log(this.reverseFileType)
+    }
 
 
   selected: File | null = null;
@@ -35,17 +65,12 @@ export class JpgToPdfComponent implements OnInit {
   fileBlob: Blob | null = null;
   fileheader = new HttpHeaders()
   contentDisposition: string | null = null
+  allowedTypes: Array<string> | null | undefined;
+  urlReversed: boolean = false
+  reverseFileType: string | null = null
 
-  private allowedImageTypes = [
-    'image/jpeg', 
-    'image/png', 
-    'image/gif', 
-    'image/webp', 
-    'image/bmp', 
-    'image/tiff', 
-    'image/svg+xml', 
-    'image/x-icon'
-  ];
+
+
 
   // Method to open the .docx file input dialog
   triggerInput(): void {
@@ -63,12 +88,18 @@ export class JpgToPdfComponent implements OnInit {
   // Handle file selection based on type
   private handleFileSelection(event: Event): void {
 
-  
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      if (this.allowedImageTypes.includes(file.type)) {
+      // Extract the file extension from the file name
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      console.log(fileExtension)
+
+      // Check if the extension is in the allowed types
+      if (fileExtension && this.allowedTypes && this.allowedTypes.includes(`.${fileExtension}`)) {
         this.selected = file;
+      } else {
+        this.errorHandlerService.showErrorMessage(`Please drop a ${this.obj.fileType} file.`)
       }
     }
   }
@@ -89,10 +120,14 @@ export class JpgToPdfComponent implements OnInit {
     this.isDragging = false;
     if (event.dataTransfer?.files.length) {
       const file = event.dataTransfer.files[0];
-      if (this.allowedImageTypes.includes(file.type)) {
+      // Extract the file extension from the file name
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+
+      // Check if the extension is in the allowed types
+      if (fileExtension && this.allowedTypes && this.allowedTypes.includes(`.${fileExtension}`)) {
         this.selected = file;
       } else {
-        this.errorHandlerService.showErrorMessage('Please drop a jpeg file.')
+        this.errorHandlerService.showErrorMessage(`Please drop a ${this.obj.fileType} file.`)
       }
     }
   }
@@ -148,7 +183,7 @@ export class JpgToPdfComponent implements OnInit {
 
     // check if file are uploaded by user
     if (this.selected == null) {
-      this.errorHandlerService.showErrorMessage('Please select or drop .jpg or .jpeg file')
+        this.errorHandlerService.showErrorMessage(`Please drop a ${this.obj.fileType} file.`)
     }
     // Perform Converter
     this.convertAction();
@@ -163,25 +198,46 @@ export class JpgToPdfComponent implements OnInit {
   ////////////////////////////////////////////////////////////////
 
   convertAction(): void {
-    this.apiService.convertToPdf(this.selected!, 'image')
-    .subscribe({
-      next: (response) => {
-        this.contentDisposition = response.headers.get('Content-Disposition');
-        this.fileBlob = response.body; // Store the Blob for later
-      },
-      error: (err) => {
-        this.errorHandlerService.handleHttpError(err);
-        this.selected = null
-      },
-      complete: () => {
-        this.fileReady = true; // Notify the user
-        console.log('Document generation process completed');
-      }
-    });
+
+    if (this.urlReversed){
+
+      this.apiService.convertFromPdf(this.selected!, this.reverseFileType!)
+      .subscribe({
+        next: (response) => {
+          this.contentDisposition = response.headers.get('Content-Disposition');
+          this.fileBlob = response.body; // Store the Blob for later
+        },
+        error: (err) => {
+          this.errorHandlerService.handleHttpError(err);
+          this.selected = null
+        },
+        complete: () => {
+          this.fileReady = true; // Notify the user
+          console.log('Document generation process completed');
+        }
+      });
+    }else {
+      this.apiService.convertToPdf(this.selected!, this.obj.fileType)
+      .subscribe({
+        next: (response) => {
+          this.contentDisposition = response.headers.get('Content-Disposition');
+          this.fileBlob = response.body; // Store the Blob for later
+        },
+        error: (err) => {
+          this.errorHandlerService.handleHttpError(err);
+          this.selected = null
+        },
+        complete: () => {
+          this.fileReady = true; // Notify the user
+          console.log('Document generation process completed');
+        }
+      });
+    }
+
   }
 
 
-  
+
 
   downloadFile() {
     let fileName = 'default-file-name.pdf'; // Fallback filename
@@ -199,6 +255,7 @@ export class JpgToPdfComponent implements OnInit {
       console.log('Downloading File Failed')
     }
   }
+
 
 
 

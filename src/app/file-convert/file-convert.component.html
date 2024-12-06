@@ -1,7 +1,7 @@
 
 <div class="custom-main">
-  <h2 class="title-custom">Powerpoint to PDF</h2>
-  <h5 class="sub-title-custom">Convert Powerpoint to PDF in seconds. Easily adjust orientation and margins.</h5>
+  <h2 class="title-custom">{{obj.title}}</h2>
+  <h5 class="sub-title-custom">{{obj.subTitle}}</h5>
   <form>
     <!-- File uploader fields -->
     <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container" *ngIf="!fileReady">
@@ -16,11 +16,18 @@
           <input
             type="file"
             id="fileInput"
-            accept=".ppt, .pptx, .pptm, .pot, .potx, .potm, .pps, .ppsx, .ppsm, .odp"
+            [accept]="obj.acceptedFileType"
             style="display: none;"
             (change)="onFileSelected($event)"
           />
-          <button type="button" class="btn btn-convert" (click)="triggerInput()">Select Powerpoint File</button>
+          <button
+            type="button"
+            class="btn btn-convert"
+            (click)="triggerInput()"
+            [ngStyle]="{'background-color': obj.btnColor}">
+            {{obj.selectFileBtn}}
+          </button>
+
         </div>
         <!-- Selection Options from cloud -->
         <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center" *ngIf="!fileReady">
@@ -29,18 +36,16 @@
               <span class="hover-message">Select Word from Google Drive</span>
             </i> -->
             <i class="fa-brands fa-dropbox btn-icon" (click)="openDropboxChooser(1)">
-              <span class="hover-message">Select Powerpoint from Dropbox</span>
+              <span class="hover-message">{{obj.hoverMessage}}</span>
             </i>
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="d-flex flex-fill flex-wrap justify-content-center align-items-center" *ngIf="!fileReady">
-      <div class="drop-labal">Or drop Powerpoint files here</div>
+      <div class="drop-labal">{{obj.dropLabal}}</div>
     </div>
-
 
     <!-- Display uploaded files' name -->
     <div class="d-flex flex-fill flex-wrap gap-3  justify-content-center align-items-center" *ngIf="!fileReady">
@@ -50,7 +55,7 @@
 
     <!-- Generating Action -->
     <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container btn-submit-container-custom" *ngIf="!fileReady">
-      <button type="submit" class="btn btn-submit" [disabled]="!selected " (click)="onGenerateClick()">Convert to PDF <i class="bi bi-arrow-right-circle"></i></button>
+      <button type="submit" class="btn btn-submit" [disabled]="!selected " (click)="onGenerateClick()">{{obj.btnSubmit}}<i class="bi bi-arrow-right-circle"></i></button>
     </div>
 
 
@@ -61,7 +66,6 @@
     <div class="d-flex flex-fill flex-wrap  gap-3 justify-content-center align-items-center custom-btn-container" *ngIf="fileReady">
       <button type="click" class="btn btn-download" (click)="downloadFile()">Download File</button>
     </div>
-
   </form>
 </div>
 

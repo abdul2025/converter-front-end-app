@@ -25,7 +25,7 @@
                 <h6>Convert to PDF</h6>
                 <ul>
                   <li (click)="onClick()" ><a routerLink="/autofill"><i class="bi bi-file-earmark-pdf-fill fs-5 custom-icon-red"></i>Auto-Fill</a></li>
-                  <li (click)="onClick()"><a routerLink="/jpj_pdf"><i class="bi bi-filetype-jpg fs-5 custom-icon-yellow"></i>JPG to PDF</a></li>
+                  <li (click)="onClick()"><a routerLink="/jpg_pdf"><i class="bi bi-filetype-jpg fs-5 custom-icon-yellow"></i>JPG to PDF</a></li>
                   <li (click)="onClick()"><a routerLink="/word_pdf"><i class="bi bi-file-earmark-word-fill fs-5 custom-icon-blue"></i>WORD to PDF</a></li>
                   <li (click)="onClick()"><a routerLink="/pp_pdf"><i class="bi bi-file-earmark-ppt-fill fs-5 custom-icon-red"></i>POWERPOINT to PDF</a></li>
                   <li (click)="onClick()"><a routerLink="/excel_pdf"><i class="bi bi-file-earmark-excel fs-5 custom-icon-green"></i>Excel to PDF</a></li>
@@ -35,9 +35,11 @@
               <div class="convert-from-pdf-list">
                 <h6>Convert from PDF</h6>
                 <ul>
-                  <li (click)="onClick()"><a routerLink="/profile"><i class="bi bi-filetype-jpg fs-5 custom-icon-yellow"></i>PDF to JPG</a></li>
-                  <li (click)="onClick()"><a routerLink="/profile"><i class="bi bi-file-earmark-word-fill fs-5 custom-icon-blue"></i>PDF to WORD</a></li>
-                  <li (click)="onClick()"><a routerLink="/profile"><i class="bi bi-file-earmark-ppt-fill fs-5 custom-icon-red"></i>PDF to POWERPOINT</a></li>
+                  <li (click)="onClick()"><a routerLink="/jpg_pdf/reverse"><i class="bi bi-filetype-jpg fs-5 custom-icon-yellow"></i>PDF to JPG</a></li>
+                  <li (click)="onClick()"><a routerLink="/word_pdf/reverse"><i class="bi bi-file-earmark-word-fill fs-5 custom-icon-blue"></i>PDF to WORD</a></li>
+                  <li (click)="onClick()"><a routerLink="/pp_pdf/reverse"><i class="bi bi-file-earmark-ppt-fill fs-5 custom-icon-red"></i>PDF to Powerpoint</a></li>
+                  <li (click)="onClick()"><a routerLink="/excel_pdf/reverse"><i class="bi bi-file-earmark-excel fs-5 custom-icon-green"></i>PDF to Excel</a></li>
+                  <li (click)="onClick()"><a routerLink="/html_pdf/reverse"><i class="bi bi-filetype-html fs-5 custom-icon-orange"></i>PDF to HTML</a></li>
                 </ul>
               </div>
             </div>

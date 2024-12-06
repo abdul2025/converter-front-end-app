@@ -25,7 +25,7 @@ export class ApiService {
     formData.append('excel', excelFile);
     formData.append('results_type', outputType);
 
-    const fullUrl = `${this.apiUrl}/convert_autotask`; 
+    const fullUrl = `${this.apiUrl}/convert_autotask`;
     const headers = new HttpHeaders();
 
     return this.http.post(fullUrl, formData, {
@@ -42,7 +42,23 @@ export class ApiService {
     formData.append(type, File);
     formData.append('incoming_type', type);
 
-    const fullUrl = `${this.apiUrl}/convert_to_pdf`; 
+    const fullUrl = `${this.apiUrl}/convert_to_pdf`;
+    const headers = new HttpHeaders();
+
+    return this.http.post(fullUrl, formData, {
+      headers,
+      responseType: 'blob', // Expect binary data (ZIP file)
+      observe: 'response', // To access headers
+     });
+  }
+
+  convertFromPdf(File: File, type: string): Observable<any> {
+    const formData = new FormData();
+    formData.append('pdf', File);
+    formData.append('incoming_type', type);
+    console.log(type)
+
+    const fullUrl = `${this.apiUrl}/convert_from_pdf`;
     const headers = new HttpHeaders();
 
     return this.http.post(fullUrl, formData, {

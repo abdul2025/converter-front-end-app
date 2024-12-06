@@ -21,6 +21,7 @@ import { WordToPdfComponent } from './word-to-pdf/word-to-pdf.component';
 import { PowerpointToPdfComponent } from './powerpoint-to-pdf/powerpoint-to-pdf.component';
 import { ExcelToPdfComponent } from './excel-to-pdf/excel-to-pdf.component';
 import { HtmlToPdfComponent } from './html-to-pdf/html-to-pdf.component';
+import { FileConvertComponent } from './file-convert/file-convert.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { HtmlToPdfComponent } from './html-to-pdf/html-to-pdf.component';
     WordToPdfComponent,
     PowerpointToPdfComponent,
     ExcelToPdfComponent,
-    HtmlToPdfComponent
+    HtmlToPdfComponent,
+    FileConvertComponent
 
   ],
   imports: [
