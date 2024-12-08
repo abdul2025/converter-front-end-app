@@ -16,11 +16,6 @@ import { HttpErrorInterceptor } from './services/http-error.interceptor';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component'; // HTTP error interceptor
 import { LoadingInterceptor } from './services/loading.interceptor';
 import { GooglePickerService } from './services/google-drive-picker.service';
-import { JpgToPdfComponent } from './jpg-to-pdf/jpg-to-pdf.component';
-import { WordToPdfComponent } from './word-to-pdf/word-to-pdf.component';
-import { PowerpointToPdfComponent } from './powerpoint-to-pdf/powerpoint-to-pdf.component';
-import { ExcelToPdfComponent } from './excel-to-pdf/excel-to-pdf.component';
-import { HtmlToPdfComponent } from './html-to-pdf/html-to-pdf.component';
 import { FileConvertComponent } from './file-convert/file-convert.component';
 
 
@@ -31,11 +26,6 @@ import { FileConvertComponent } from './file-convert/file-convert.component';
     FooterComponent,
     MainContentComponent,
     LoadingSpinnerComponent,
-    JpgToPdfComponent,
-    WordToPdfComponent,
-    PowerpointToPdfComponent,
-    ExcelToPdfComponent,
-    HtmlToPdfComponent,
     FileConvertComponent
 
   ],
