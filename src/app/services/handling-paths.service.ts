@@ -70,20 +70,20 @@ export class HandlingPathsService {
   };
 
   private pathMapReverse: { [key: string]: ConversionInfoInterface } = {
-    'merge_pdf': {
-      'title': 'Merge PDFs',
-      'subTitle': 'Merge PDF. Easily adjust orientation and margins.',
+    'jpg_pdf/reverse': {
+      'title': 'PDF to JPG',
+      'subTitle': 'Convert PDF to high-quality JPG images. Easily adjust orientation and margins.',
       'selectFileBtn': 'Select PDF File',
       'hoverMessage': 'Select PDF from Dropbox',
       'dropLabal': 'Or drop PDF files here',
-      'btnSubmit': 'Merge',
+      'btnSubmit': 'Convert to JPG',
       'btnColor': 'rgb(204, 27, 27)', // Example color
       'acceptedFileType': '.pdf',
-      'fileType': 'pdf_merge'
+      'fileType': 'pdf_jpg'
     },
-    'split_pdf': {
-      'title': 'Split PDF file',
-      'subTitle': 'Split PDF. Easily adjust orientation and margins.',
+    'word_pdf/reverse': {
+      'title': 'PDF to Word',
+      'subTitle': 'Convert PDF documents to editable Word files. Easily adjust orientation and margins.',
       'selectFileBtn': 'Select PDF File',
       'hoverMessage': 'Select PDF from Dropbox',
       'dropLabal': 'Or drop PDF files here',
@@ -92,9 +92,9 @@ export class HandlingPathsService {
       'acceptedFileType': '.pdf',
       'fileType': 'pdf_docx'
     },
-    'remove_page': {
-      'title': 'Remove PDF pages',
-      'subTitle': 'Select and remove the PDF pages you don’t need. Get a new file without your deleted pages.',
+    'pp_pdf/reverse': {
+      'title': 'PDF to PowerPoint',
+      'subTitle': 'Convert PDF slides to editable PowerPoint presentations. Easily adjust orientation and margins.',
       'selectFileBtn': 'Select PDF File',
       'hoverMessage': 'Select PDF from Dropbox',
       'dropLabal': 'Or drop PDF files here',
@@ -102,6 +102,28 @@ export class HandlingPathsService {
       'btnColor': 'rgb(204, 27, 27)', // Example color
       'acceptedFileType': '.pdf',
       'fileType': 'pdf_powerPoint'
+    },
+    'excel_pdf/reverse': {
+      'title': 'PDF to Excel',
+      'subTitle': 'Convert PDF tables to Excel spreadsheets. Easily adjust orientation and margins.',
+      'selectFileBtn': 'Select PDF File',
+      'hoverMessage': 'Select PDF from Dropbox',
+      'dropLabal': 'Or drop PDF files here',
+      'btnSubmit': 'Convert to Excel',
+      'btnColor': 'rgb(204, 27, 27)', // Example color
+      'acceptedFileType': '.pdf',
+      'fileType': 'pdf_excel',
+    },
+    'html_pdf/reverse': {
+      'title': 'PDF to HTML',
+      'subTitle': 'Convert PDF files to HTML format. Easily adjust orientation and margins.',
+      'selectFileBtn': 'Select PDF File',
+      'hoverMessage': 'Select PDF from Dropbox',
+      'dropLabal': 'Or drop PDF files here',
+      'btnSubmit': 'Convert to HTML',
+      'btnColor': 'rgb(204, 27, 27)', // Example color
+      'acceptedFileType': '.pdf',
+      'fileType': 'pdf_html',
     }
   };
 
