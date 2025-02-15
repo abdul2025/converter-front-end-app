@@ -66,7 +66,19 @@ export class HandlingPathsService {
       'btnColor': 'rgb(240 144 31)', // Example color
       'acceptedFileType': '.html, .htm, .xhtml',
       'fileType': 'html'
+    },
+    'lock_pdf': {
+      'title': 'Lock your PDF with your own password',
+      'subTitle': 'Secure your PDF by adding a password. Protect sensitive documents easily.',
+      'selectFileBtn': 'Select PDF File',
+      'hoverMessage': 'Select PDF from Dropbox',
+      'dropLabal': 'Or drop PDF files here',
+      'btnSubmit': 'Lock PDF',
+      'btnColor': 'rgb(204, 27, 27)', // Example color
+      'acceptedFileType': '.pdf',
+      'fileType': 'pdf'
     }
+
   };
 
   private pathMapReverse: { [key: string]: ConversionInfoInterface } = {

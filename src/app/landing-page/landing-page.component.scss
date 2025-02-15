@@ -1,0 +1,85 @@
+@import '.././app.component.scss'; // Adjust the path as necessary
+
+/* General Styles */
+.custom-main {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.hero {
+  background-color: #f8f9fa;
+  padding: 60px 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  color: #2d64e5;
+  font-weight: 800;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: #4a4a4a;
+}
+
+/* Tools Container */
+.tools__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+}
+
+/* Tool Item */
+.tools__item {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tools__item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tools__item__icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.tools__item h3 {
+  font-size: 1.25rem;
+  color: #2d64e5;
+  margin-bottom: 0.75rem;
+}
+
+.tools__item__content p {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Icon Colors */
+.text-primary {
+  color: #2d64e5;
+}
+
+.text-success {
+  color: #1aab5b;
+}
+
+.text-danger {
+  color: #e5322d;
+}
+
+.text-warning {
+  color: #ffc107;
+}
+
+.text-secondary {
+  color: #6c757d;
+}
+

@@ -17,6 +17,7 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { LoadingInterceptor } from './services/loading.interceptor';
 import { GooglePickerService } from './services/google-drive-picker.service';
 import { FileConvertComponent } from './file-convert/file-convert.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { FileConvertComponent } from './file-convert/file-convert.component';
     FooterComponent,
     MainContentComponent,
     LoadingSpinnerComponent,
-    FileConvertComponent
+    FileConvertComponent,
+    LandingPageComponent
 
   ],
   imports: [

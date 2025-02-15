@@ -1,7 +1,7 @@
 <!-- src/app/header/header.component.html -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light custom-header">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Autotask Docu <i class="bi bi-building-gear icon-custom"></i></a>
+    <a class="navbar-brand" routerLink="/landing_page">Autotask Docu <i class="bi bi-building-gear icon-custom"></i></a>
     <button
       class="navbar-toggler"
       type="button"
@@ -24,7 +24,6 @@
               <div class="convert-to-pdf-list">
                 <h6>Convert to PDF</h6>
                 <ul>
-                  <li (click)="onClick()" ><a routerLink="/autofill"><i class="bi bi-file-earmark-pdf-fill fs-5 custom-icon-red"></i>Auto-Fill</a></li>
                   <li (click)="onClick()"><a routerLink="/jpg_pdf"><i class="bi bi-filetype-jpg fs-5 custom-icon-yellow"></i>JPG to PDF</a></li>
                   <li (click)="onClick()"><a routerLink="/word_pdf"><i class="bi bi-file-earmark-word-fill fs-5 custom-icon-blue"></i>WORD to PDF</a></li>
                   <li (click)="onClick()"><a routerLink="/pp_pdf"><i class="bi bi-file-earmark-ppt-fill fs-5 custom-icon-red"></i>POWERPOINT to PDF</a></li>
@@ -38,8 +37,15 @@
                   <li (click)="onClick()"><a routerLink="/jpg_pdf/reverse"><i class="bi bi-filetype-jpg fs-5 custom-icon-yellow"></i>PDF to JPG</a></li>
                   <li (click)="onClick()"><a routerLink="/word_pdf/reverse"><i class="bi bi-file-earmark-word-fill fs-5 custom-icon-blue"></i>PDF to WORD</a></li>
                   <li (click)="onClick()"><a routerLink="/pp_pdf/reverse"><i class="bi bi-file-earmark-ppt-fill fs-5 custom-icon-red"></i>PDF to Powerpoint</a></li>
-                  <li (click)="onClick()"><a routerLink="/excel_pdf/reverse"><i class="bi bi-file-earmark-excel fs-5 custom-icon-green"></i>PDF to Excel</a></li>
-                  <li (click)="onClick()"><a routerLink="/html_pdf/reverse"><i class="bi bi-filetype-html fs-5 custom-icon-orange"></i>PDF to HTML</a></li>
+                  <!-- <li (click)="onClick()"><a routerLink="/excel_pdf/reverse"><i class="bi bi-file-earmark-excel fs-5 custom-icon-green"></i>PDF to Excel</a></li> -->
+                  <!-- <li (click)="onClick()"><a routerLink="/html_pdf/reverse"><i class="bi bi-filetype-html fs-5 custom-icon-orange"></i>PDF to HTML</a></li> -->
+                </ul>
+              </div>
+              <div class="convert-from-pdf-list">
+                <h6>PDF Services</h6>
+                <ul>
+                  <li (click)="onClick()" ><a routerLink="/autofill"><i class="bi bi-file-earmark-pdf-fill fs-5 custom-icon-red"></i>Auto-Fill</a></li>
+                  <li (click)="onClick()"><a routerLink="/lock_pdf"><i class="bi bi-file-earmark-pdf-fill fs-5 custom-icon-red"></i>Lock your PDF</a></li>
                 </ul>
               </div>
             </div>
